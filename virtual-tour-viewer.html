@@ -189,7 +189,7 @@
                     0.1,
                     1000
                 );
-                this.camera.position.set(0, 1.28, 5); // Высота камеры (1.6м - 20%)
+                this.camera.position.set(0, 0.96, 5); // Высота камеры (1.6м - 40%)
 
                 // Renderer
                 this.renderer = new THREE.WebGLRenderer({
@@ -384,7 +384,7 @@
                 }
 
                 // Фиксируем высоту камеры (не даем "проваливаться" под пол)
-                this.camera.position.y = Math.max(this.camera.position.y, 1.28);
+                this.camera.position.y = Math.max(this.camera.position.y, 0.96);
             }
             
             animate() {
