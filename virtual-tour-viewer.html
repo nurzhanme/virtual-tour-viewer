@@ -343,6 +343,8 @@
                 // Вычисляем правый вектор (для A/D)
                 right.crossVectors(direction, new THREE.Vector3(0, 1, 0)).normalize();
 
+                const rotationSpeed = 0.03; // Скорость поворота
+
                 // W / Arrow Up - вперед
                 if (this.keys['KeyW'] || this.keys['ArrowUp']) {
                     this.camera.position.addScaledVector(direction, this.moveSpeed);
@@ -355,16 +357,30 @@
                     this.controls.target.addScaledVector(direction, -this.moveSpeed);
                 }
 
-                // A / Arrow Left - влево
-                if (this.keys['KeyA'] || this.keys['ArrowLeft']) {
+                // A - влево (стрейф)
+                if (this.keys['KeyA']) {
                     this.camera.position.addScaledVector(right, -this.moveSpeed);
                     this.controls.target.addScaledVector(right, -this.moveSpeed);
                 }
 
-                // D / Arrow Right - вправо
-                if (this.keys['KeyD'] || this.keys['ArrowRight']) {
+                // D - вправо (стрейф)
+                if (this.keys['KeyD']) {
                     this.camera.position.addScaledVector(right, this.moveSpeed);
                     this.controls.target.addScaledVector(right, this.moveSpeed);
+                }
+
+                // Arrow Left - поворот влево
+                if (this.keys['ArrowLeft']) {
+                    const offset = this.controls.target.clone().sub(this.camera.position);
+                    offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), rotationSpeed);
+                    this.controls.target.copy(this.camera.position).add(offset);
+                }
+
+                // Arrow Right - поворот вправо
+                if (this.keys['ArrowRight']) {
+                    const offset = this.controls.target.clone().sub(this.camera.position);
+                    offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), -rotationSpeed);
+                    this.controls.target.copy(this.camera.position).add(offset);
                 }
 
                 // Фиксируем высоту камеры (не даем "проваливаться" под пол)
